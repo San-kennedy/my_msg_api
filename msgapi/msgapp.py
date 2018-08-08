@@ -13,7 +13,7 @@ class Message(object):
 
      """
 
-    dbs = CLIENT['msg']
+    dbs = CLIENT['msgstore']
     messages = dbs['messages']
 
     def on_get(self, req, res):

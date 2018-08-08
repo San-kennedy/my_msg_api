@@ -12,7 +12,7 @@ import os
 #try to fetch the below from property file
 
 #placeholder mongo connection string
-CONNSTR = 'mongodb://mongodb:27017/'
+CONNSTR = 'mongodb://mongo-db:27017/'
 #fetch from env varianle
 USERNAME = os.getenv('MONGO_USER')
 PASSWORD = os.getenv('MONGO_PASSWD')

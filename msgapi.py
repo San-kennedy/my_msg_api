@@ -9,11 +9,15 @@ from msgapi.mongo_db_conf import CLIENT
 from datetime import datetime
 
 try:
-    if ('msg' not in CLIENT.list_database_names()):
-        dbs = CLIENT['msg']
+    #check if application database exists
+    #if not create it before starting up
+    #database name msgstore
+    if ('msgstore' not in CLIENT.list_database_names()):
+        dbs = CLIENT['msgstore']
         coll = dbs["defaultthroughapi"]
         coll.insert_one({'db': 'msg', "creationTimeUTC": datetime.utcnow()})
         print('Created App DB \n')
+        #naming collection as messages
         dbs.create_collection('messages')
         print('Created app collection \n')
 
@@ -23,7 +27,7 @@ try:
 
     MSG = Message()
 
-    API.add_route('/message', MSG)
+    MSGAPI.add_route('/message', MSG)
 
 except Exception as exp:
     print(str(exp))
