@@ -12,12 +12,12 @@ try:
     if ('msg' not in CLIENT.list_database_names()):
         dbs = CLIENT['msg']
         coll = dbs["defaultthroughapi"]
-        coll.insert_one({'db': database, "creationTimeUTC": datetime.utcnow()})
+        coll.insert_one({'db': 'msg', "creationTimeUTC": datetime.utcnow()})
         print('Created App DB \n')
         dbs.create_collection('messages')
         print('Created app collection \n')
-    else:
-        print("App database exists, Startin APP...")
+
+    print("App database exists, Startin APP...")
 
     MSGAPI = falcon.API()
 
