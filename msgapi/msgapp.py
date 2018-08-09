@@ -34,9 +34,17 @@ class Message(object):
     def on_post(self,req,res):
 
         try:
+            #check for content type of palyload. accept only application/json
             if req.content_type != "application/json":
                 raise custexp.ContentTypeUnsupported()
             request = json.load(req.stream)
+            #check if the content is a list of messages
+            if type(request) != list:
+                raise custexp.IllegalArgumentException
+            #check if each messages in list have a key 'msg'
+            for entry in request:
+                if 'msg' not in entry:
+                    raise  custexp.IllegalArgumentException
             ids = self.messages.insert(request)
             res.body = json.dumps(str(ids),ensure_ascii=False)
             res.status = falcon.HTTP_200
