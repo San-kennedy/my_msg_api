@@ -24,7 +24,7 @@ class SpecificMsg(object):
             oid = ObjectId(obj_str)
             #query to find the message
             result = self.messages.find_one({"_id":oid})
-            if not bool(result):
+            if not result:
                 res.body = json.dumps({"Info":"Message not found"}, ensure_ascii = False)
                 res.status = falcon.HTTP_200
             else:
@@ -39,4 +39,24 @@ class SpecificMsg(object):
         except Exception as exp:
             body = {"Error":str(exp)}
             res.body = json.dumps(body,ensure_ascii=False)
+            res.status = falcon.HTTP_400
+
+    def on_delete(self, req, res, msgId):
+        """
+            Implementing Delete logic
+        """
+
+        try:
+            obj_str = msgId
+            oid = ObjectId(obj_str)
+            del_op = self.messages.delete_one({"_id":oid})
+            if del_op.deleted_count:
+                res.body = json.dumps({"deleted_msgId":msgId}, ensure_ascii=False)
+                res.status = falcon.HTTP_200
+            else:
+                res.body = json.dumps({"info": "Message not found"}, ensure_ascii=False)
+                res.status = falcon.HTTP_200
+        except Exception as exp:
+            body = {"Error":str(exp)}
+            res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_400
