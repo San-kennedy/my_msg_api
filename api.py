@@ -5,6 +5,7 @@ Main module to launch APIs
 import sys
 import falcon
 from msgapi.msgapp import Message
+from msgapi.specific_msg import SpecificMsg
 from msgapi.mongo_db_conf import CLIENT
 from datetime import datetime
 
@@ -26,8 +27,10 @@ try:
     MSGAPI = falcon.API()
 
     MSG = Message()
+    SPECIFICMSG = SpecificMsg()
 
     MSGAPI.add_route('/message', MSG)
+    MSGAPI.add_route('/message/{msgId}', SPECIFICMSG)
 
 except Exception as exp:
     print(str(exp))
