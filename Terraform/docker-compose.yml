@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  mongo-db:
+    image: mongo:3.6.6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: qlik
+      MONGO_INITDB_ROOT_PASSWORD: qlik
+
+  api:
+    #fill in the image here
+    image: santoshken/my_msg_api
+    depends_on: [mongo-db]
+    ports: ["8000:8000"]
+    environment:
+      MONGO_USER: qlik
+      MONGO_PASSWD: qlik
