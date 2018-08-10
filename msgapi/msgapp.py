@@ -53,10 +53,3 @@ class Message(object):
             body = {"Error":str(exp)}
             res.body = json.dumps(body,ensure_ascii=False)
             res.status = falcon.HTTP_400
-
-
-
-
-
-
-
