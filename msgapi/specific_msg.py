@@ -3,6 +3,7 @@ Implement API for specific message request
 """
 
 import json
+import string
 import logging
 import falcon
 from bson import ObjectId
@@ -17,6 +18,16 @@ class SpecificMsg(object):
     dbs = CLIENT['msgstore']
     messages = dbs['messages']
     specificmsgapp_logger = logging.getLogger('myapi.msgapp.specific_msg')
+
+    @classmethod
+    def palindrome_test(cls, msg_str):
+        letters = set(string.ascii_lowercase)
+        msg_str_lower = msg_str.lower()
+        processed_str = ""
+        for char in msg_str_lower:
+            if char in letters:
+                processed_str+=char
+        return processed_str == processed_str[::-1]
 
     def on_get(self, req, res, msgId):
         """ Implement get logic"""
@@ -33,7 +44,7 @@ class SpecificMsg(object):
                 self.specificmsgapp_logger.warning("Message with ID %s not found", obj_str)
             else:
                 #palindrome check
-                if result['msg'] == result['msg'][::-1]:
+                if self.palindrome_test(result['msg']):
                     result['palindrome'] = True
                 else:
                     result['palindrome'] = False
