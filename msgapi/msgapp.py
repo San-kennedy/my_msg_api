@@ -44,7 +44,7 @@ class Message(object):
             request = json.load(req.stream)
             self.msgapp_logger.debug("Post received payload %s", str(request))
             #check if the content is a list of messages
-            if isinstance(request, list):
+            if not isinstance(request, list):
                 raise custexp.IllegalArgumentException
             #check if each messages in list have a key 'msg'
             for entry in request:
