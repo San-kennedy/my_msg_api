@@ -7,9 +7,9 @@ RUN apk add --no-cache bash curl gawk sed grep bc coreutils
 
 RUN pip install gunicorn pymongo falcon
 
-COPY msg_api /opt/msg_api
+COPY my_msg_api /opt/my_msg_api
 
-WORKDIR /opt/msg_api
+WORKDIR /opt/my_msg_api
 
 EXPOSE 8000
 
