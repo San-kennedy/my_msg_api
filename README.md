@@ -19,7 +19,12 @@ Rest api that allows users to post/view/delete message using mongo as backend DB
 
 ## Build, delpoy and access
 
-#### To build and run app alone
+#### To just run the API code using WSGI servers:
+- Make sure to change /msgapi/mongo_db_conf.py to reflect existing mongo details
+- For windows: pip install waitress, followed by waitress-serve --port 8000 api:MSGAPI in cloned directory
+- For linux/MacOS : pip install gunicorn, followed by gunicorn -b 0.0.0.0:8000 api:MSGAPI in cloned directory
+
+#### To build and run app alone in a container
 
 - Use dockefile to build docker image, make sure to change /msgapi/mongo_db_conf.py to reflect existing mongo details
 - docker run -d -p 8000:8000 <image name>
