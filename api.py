@@ -17,7 +17,7 @@ try:
     #check if application database exists
     #if not create it before starting up
     #database name msgstore
-    if ('msgstore' not in CLIENT.list_database_names()):
+    if 'msgstore' not in CLIENT.list_database_names():
         dbs = CLIENT['msgstore']
         coll = dbs["defaultthroughapi"]
         coll.insert_one({'db': 'msg', "creationTimeUTC": datetime.utcnow()})

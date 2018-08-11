@@ -24,13 +24,13 @@ class SpecificMsg(object):
             obj_str = msgId
             # converting string to ObjectId typr
             oid = ObjectId(obj_str)
-            self.specificmsgapp_logger.debug("Received msgID "+ obj_str)
+            self.specificmsgapp_logger.debug("Received msgID %s", obj_str)
             #query to find the message
             result = self.messages.find_one({"_id":oid})
             if not result:
                 res.body = json.dumps({"Info":"Message not found"}, ensure_ascii = False)
                 res.status = falcon.HTTP_404
-                self.specificmsgapp_logger.warning("Message with ID "+obj_str+" not found")
+                self.specificmsgapp_logger.warning("Message with ID %s not found", obj_str)
             else:
                 #palindrome check
                 if result['msg'] == result['msg'][::-1]:
@@ -40,13 +40,13 @@ class SpecificMsg(object):
                 res.body = json.dumps(str(result), ensure_ascii = False)
                 res.status = falcon.HTTP_200
                 self.specificmsgapp_logger.info("Message returned")
-                self.specificmsgapp_logger.debug("Message with ID "+obj_str+" returned")
+                self.specificmsgapp_logger.debug("Message with ID %s returned", obj_str)
 
         except Exception as exp:
             body = {"Error":str(exp)}
-            res.body = json.dumps(body,ensure_ascii=False)
+            res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_400
-            self.specificmsgapp_logger.error("Exception"+str(body))
+            self.specificmsgapp_logger.error("Exception %s", str(body))
 
     def on_delete(self, req, res, msgId):
         """
@@ -56,19 +56,19 @@ class SpecificMsg(object):
         try:
             obj_str = msgId
             oid = ObjectId(obj_str)
-            self.specificmsgapp_logger.debug("Received msgID "+ obj_str)
+            self.specificmsgapp_logger.debug("Received msgID %s", obj_str)
             del_op = self.messages.delete_one({"_id":oid})
             if del_op.deleted_count:
                 res.body = json.dumps({"deleted_msgId":msgId}, ensure_ascii=False)
                 res.status = falcon.HTTP_200
                 self.specificmsgapp_logger.info("Deleted Msg")
-                self.specificmsgapp_logger.debug("Message with ID "+obj_str+" deleted")
+                self.specificmsgapp_logger.debug("Message wit ID %s deleted", obj_str)
             else:
                 res.body = json.dumps({"info": "Message not found"}, ensure_ascii=False)
                 res.status = falcon.HTTP_404
-                self.specificmsgapp_logger.warning("Message wit ID "+obj_str+" not found")
+                self.specificmsgapp_logger.warning("Message wit ID %s not found", obj_str)
         except Exception as exp:
             body = {"Error":str(exp)}
             res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_400
-            self.specificmsgapp_logger.error("Exception"+str(body))
+            self.specificmsgapp_logger.error("Exception %s", str(body))

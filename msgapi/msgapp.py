@@ -33,7 +33,7 @@ class Message(object):
             body = {"Error":str(exp)}
             res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_500
-            self.msgapp_logger.error("Exception"+str(body))
+            self.msgapp_logger.error("Exception %s", str(body))
 
     def on_post(self, req, res):
         """Implement post logic"""
@@ -42,9 +42,9 @@ class Message(object):
             if req.content_type != "application/json":
                 raise custexp.ContentTypeUnsupported()
             request = json.load(req.stream)
-            self.msgapp_logger.debug("Post received payload"+str(request))
+            self.msgapp_logger.debug("Post received payload %s", str(request))
             #check if the content is a list of messages
-            if type(request) != list:
+            if isinstance(request, list):
                 raise custexp.IllegalArgumentException
             #check if each messages in list have a key 'msg'
             for entry in request:
@@ -54,10 +54,10 @@ class Message(object):
             res.body = json.dumps(str(ids), ensure_ascii=False)
             res.status = falcon.HTTP_200
             self.msgapp_logger.info("Post success")
-            self.msgapp_logger.debug("Obj ID/s "+str(ids))
+            self.msgapp_logger.debug("Obj ID/s %s", str(ids))
 
         except Exception as exp:
             body = {"Error":str(exp)}
             res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_400
-            self.msgapp_logger.error("Exception"+str(body))
+            self.msgapp_logger.error("Exception %s", str(body))
