@@ -3,6 +3,7 @@ Implement API for general message request
 """
 
 import json
+import logging
 import falcon
 from msgapi.mongo_db_conf import CLIENT
 import msgapi.exceptions as custexp
@@ -15,6 +16,7 @@ class Message(object):
 
     dbs = CLIENT['msgstore']
     messages = dbs['messages']
+    msgapp_logger = logging.getLogger('myapi.msgapp')
 
     def on_get(self, req, res):
         """ Implement get logic"""
@@ -25,19 +27,22 @@ class Message(object):
 
             res.body = json.dumps(str(result), ensure_ascii = False)
             res.status = falcon.HTTP_200
+            self.msgapp_logger.info("sending response to get on generic message")
 
         except Exception as exp:
             body = {"Error":str(exp)}
-            res.body = json.dumps(body,ensure_ascii=False)
+            res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_500
+            self.msgapp_logger.error("Exception"+str(body))
 
-    def on_post(self,req,res):
-
+    def on_post(self, req, res):
+        """Implement post logic"""
         try:
             #check for content type of palyload. accept only application/json
             if req.content_type != "application/json":
                 raise custexp.ContentTypeUnsupported()
             request = json.load(req.stream)
+            self.msgapp_logger.debug("Post received payload"+str(request))
             #check if the content is a list of messages
             if type(request) != list:
                 raise custexp.IllegalArgumentException
@@ -46,10 +51,13 @@ class Message(object):
                 if 'msg' not in entry:
                     raise  custexp.IllegalArgumentException
             ids = self.messages.insert(request)
-            res.body = json.dumps(str(ids),ensure_ascii=False)
+            res.body = json.dumps(str(ids), ensure_ascii=False)
             res.status = falcon.HTTP_200
+            self.msgapp_logger.info("Post success")
+            self.msgapp_logger.debug("Obj ID/s "+str(ids))
 
         except Exception as exp:
             body = {"Error":str(exp)}
-            res.body = json.dumps(body,ensure_ascii=False)
+            res.body = json.dumps(body, ensure_ascii=False)
             res.status = falcon.HTTP_400
+            self.msgapp_logger.error("Exception"+str(body))
