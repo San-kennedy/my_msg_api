@@ -6,7 +6,7 @@ Rest api that allows users to post/view/delete message using mongo as backend DB
  - The API is implemented using falconAPI framework for Python. 
  - The API is served using Gunicorn WSGI server.
  - API code and it's runtime dependencies are packaged as a docker image (refer Dockerfile for details).
- - MongoDB was choose to persist messages posted to the app.
+ - MongoDB was choose to persist messages, as it's document oriented approach lends itself seamlessly to REST API design.
  - Docker compose allows us to orchestrate/interact with the deployment of app and DB as single entity (refer docker-compose.yml within Terraform directory for details).
  - Terraform is used to provision a VM on AWS to host the application.
 
@@ -27,7 +27,7 @@ Rest api that allows users to post/view/delete message using mongo as backend DB
 #### To build and run app alone in a container
 
 - Use dockefile to build docker image, make sure to change /msgapi/mongo_db_conf.py to reflect existing mongo details
-- docker run -d -p 8000:8000 <image name>
+- docker run -d -p 8000:8000 image name
 - curl localhost:8000/messages to check
 
 #### To run using docker compose
